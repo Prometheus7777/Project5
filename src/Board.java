@@ -21,8 +21,38 @@ public class Board {
         this.chess = chess;
         gameBoard = new HashMap<>();
 
+        Piece blankSpace = new Man("");
+        for (int i = 1; i < 9; i++) {
+            for (int j = 1; j < 9; j++) {
+                String key = toBoardSpace(i, j);
+                gameBoard.put(key, new Man(blankSpace));
+            }
+        }
         if (!chess){
             //TODO: I'll fix this constructor
+            Piece whiteMan = new Man("wMan");
+            for (int i = 1; i < 4; i += 2) {
+                for (int j = 1; j < 8; j += 2) {
+                    String key = toBoardSpace(i, j);
+                    gameBoard.replace(key, new Man(whiteMan));
+                }
+            }
+            for (int i = 2; i < 9; i += 2) {
+                String key = toBoardSpace(2, i);
+                gameBoard.replace(key, new Man(whiteMan));
+            }
+
+            Piece blackMan = new Man("bMan");
+            for (int i = 6; i < 9; i += 2) {
+                for (int j = 2; j < 9; j += 2) {
+                    String key = toBoardSpace(i, j);
+                    gameBoard.replace(key, new Man(blackMan));
+                }
+            }
+            for (int i = 1; i < 8; i += 2) {
+                String key = toBoardSpace(7, i);
+                gameBoard.replace(key, new Man(blackMan));
+            }
         }
 //        for (int i = 0; i < 8; i++) {
 //            for (int j = 0; j < 8; j++) {
@@ -49,6 +79,7 @@ public class Board {
      */
     public void movePiece(String toMove, String moveTo){
         //TODO: Implement this method
+
     }
 
     /**
@@ -68,7 +99,33 @@ public class Board {
      * of chess or checkers depending on the value of the member variable chess
      */
     public void printBoard(){
-        //TODO: Iterate through gameBoard and print out a board based on that
+        for (int i = 8; i >= 1; i--) {
+            for (int j = 1; j <= 8; j++) {
+                String tempSpace = toBoardSpace(i, j);
+                if (!isOccupied(tempSpace)){
+                    System.out.print("|_");
+                }
+                else {
+                    if (gameBoard.get(tempSpace).getColor().equals("w")){
+                        if (gameBoard.get(tempSpace).getMan()){
+                            System.out.print("|K");
+                        }
+                        else {
+                            System.out.print("|" + (char) '\u03B8');
+                        }
+                    }
+                    else {
+                        if (gameBoard.get(tempSpace).getMan()){
+                            System.out.print("|k");
+                        }
+                        else {
+                            System.out.print("|o");
+                        }
+                    }
+                }
+            }
+            System.out.print("|\n");
+        }
 //        for (int i = gameBoard.size() - 1; i >= 0; i--) {
 //            if (gameBoard.get(i).getName().getEmpty()){
 //                System.out.println("_");

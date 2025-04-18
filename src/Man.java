@@ -23,42 +23,72 @@ public class Man extends Piece {
         int x = tempCoords[0];
         int y = tempCoords[1];
 
-        if (this.getType().equals("w")){
-            for (int i = 1; i < 8; i++) {
+
+        if (this.getColor().equals("w")){
+            if ((((x + 1) <= 8) && ((x + 1) >= 1)) && (((y + 1) <= 8) && ((y + 1) >= 1))){
                 ArrayList<Integer> coordinates = new ArrayList<>();
-                if ((((x + i) <= 8) && ((x + i) >= 1)) && (((y + i) <= 8) && ((y + i) >= 1))){
-                    coordinates.add(x + i);
-                    coordinates.add(y + i);
-                    spaces.add(coordinates);
-                }
+                coordinates.add(x + 1);
+                coordinates.add(y + 1);
+                spaces.add(coordinates);
             }
-            for (int i = 1; i < 8; i++) {
+            if ((((x - 1) <= 8) && ((x - 1) >= 1)) && (((y + 1) <= 8) && ((y + 1) >= 1))){
                 ArrayList<Integer> coordinates = new ArrayList<>();
-                if ((((x + i) <= 8) && ((x + i) >= 1)) && (((y - i) <= 8) && ((y - i) >= 1))){
-                    coordinates.add(x + i);
-                    coordinates.add(y + i);
-                    spaces.add(coordinates);
-                }
+                coordinates.add(x - 1);
+                coordinates.add(y + 1);
+                spaces.add(coordinates);
             }
         }
         else {
-            for (int i = 1; i < 8; i++) {
+            if ((((x - 1) <= 8) && ((x - 1) >= 1)) && (((y - 1) <= 8) && ((y - 1) >= 1))){
                 ArrayList<Integer> coordinates = new ArrayList<>();
-                if ((((x - i) <= 8) && ((x - i) >= 1)) && (((y + i) <= 8) && ((y + i) >= 1))){
-                    coordinates.add(x + i);
-                    coordinates.add(y + i);
-                    spaces.add(coordinates);
-                }
+                coordinates.add(x - 1);
+                coordinates.add(y - 1);
+                spaces.add(coordinates);
             }
-            for (int i = 1; i < 8; i++) {
+            if ((((x + 1) <= 8) && ((x + 1) >= 1)) && (((y - 1) <= 8) && ((y - 1) >= 1))){
                 ArrayList<Integer> coordinates = new ArrayList<>();
-                if ((((x - i) <= 8) && ((x - i) >= 1)) && (((y - i) <= 8) && ((y - i) >= 1))){
-                    coordinates.add(x + i);
-                    coordinates.add(y + i);
-                    spaces.add(coordinates);
-                }
+                coordinates.add(x + 1);
+                coordinates.add(y - 1);
+                spaces.add(coordinates);
             }
         }
+
+//        if (this.getType().equals("w")){
+//            for (int i = 1; i < 8; i++) {
+//                ArrayList<Integer> coordinates = new ArrayList<>();
+//                if ((((x + i) <= 8) && ((x + i) >= 1)) && (((y + i) <= 8) && ((y + i) >= 1))){
+//                    coordinates.add(x + i);
+//                    coordinates.add(y + i);
+//                    spaces.add(coordinates);
+//                }
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                ArrayList<Integer> coordinates = new ArrayList<>();
+//                if ((((x + i) <= 8) && ((x + i) >= 1)) && (((y - i) <= 8) && ((y - i) >= 1))){
+//                    coordinates.add(x + i);
+//                    coordinates.add(y - i);
+//                    spaces.add(coordinates);
+//                }
+//            }
+//        }
+//        else {
+//            for (int i = 1; i < 8; i++) {
+//                ArrayList<Integer> coordinates = new ArrayList<>();
+//                if ((((x - i) <= 8) && ((x - i) >= 1)) && (((y + i) <= 8) && ((y + i) >= 1))){
+//                    coordinates.add(x - i);
+//                    coordinates.add(y + i);
+//                    spaces.add(coordinates);
+//                }
+//            }
+//            for (int i = 1; i < 8; i++) {
+//                ArrayList<Integer> coordinates = new ArrayList<>();
+//                if ((((x - i) <= 8) && ((x - i) >= 1)) && (((y - i) <= 8) && ((y - i) >= 1))){
+//                    coordinates.add(x - i);
+//                    coordinates.add(y - i);
+//                    spaces.add(coordinates);
+//                }
+//            }
+//        }
 
         for (ArrayList<Integer> coords : spaces){
             spacesToMove.add(Board.toBoardSpace(coords.get(0), coords.get(1)));
