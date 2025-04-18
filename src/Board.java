@@ -21,7 +21,7 @@ public class Board {
         this.chess = chess;
         gameBoard = new HashMap<>();
 
-        Piece blankSpace = new Man("");
+        Piece blankSpace = new Man("empty");
         for (int i = 1; i < 9; i++) {
             for (int j = 1; j < 9; j++) {
                 String key = toBoardSpace(i, j);
@@ -32,24 +32,24 @@ public class Board {
             Piece whiteMan = new Man("wMan");
             for (int i = 1; i < 4; i += 2) {
                 for (int j = 1; j < 8; j += 2) {
-                    String key = toBoardSpace(i, j);
+                    String key = toBoardSpace(j, i);
                     gameBoard.replace(key, new Man(whiteMan));
                 }
             }
             for (int i = 2; i < 9; i += 2) {
-                String key = toBoardSpace(2, i);
+                String key = toBoardSpace(i, 2);
                 gameBoard.replace(key, new Man(whiteMan));
             }
 
             Piece blackMan = new Man("bMan");
             for (int i = 6; i < 9; i += 2) {
                 for (int j = 2; j < 9; j += 2) {
-                    String key = toBoardSpace(i, j);
+                    String key = toBoardSpace(j, i);
                     gameBoard.replace(key, new Man(blackMan));
                 }
             }
             for (int i = 1; i < 8; i += 2) {
-                String key = toBoardSpace(7, i);
+                String key = toBoardSpace(i, 7);
                 gameBoard.replace(key, new Man(blackMan));
             }
         }
@@ -87,7 +87,7 @@ public class Board {
     public Board movePiece(String toMove, String moveTo){
         //TODO: Implement this method
         Piece toMovePiece = new Man(gameBoard.get(toMove));
-        gameBoard.replace(toMove, new Man(""));
+        gameBoard.replace(toMove, new Man("empty"));
         gameBoard.replace(moveTo, toMovePiece);
         return new Board(this);
     }
@@ -98,7 +98,7 @@ public class Board {
      */
     public boolean isOccupied(String boardSpace){
         boolean occupied = true;
-        if (gameBoard.get(boardSpace).getName().equals("")){
+        if (gameBoard.get(boardSpace).getName().equals("empty")){
             occupied = false;
         }
         return occupied;
@@ -111,7 +111,7 @@ public class Board {
     public void printBoard(){
         for (int i = 8; i >= 1; i--) {
             for (int j = 1; j <= 8; j++) {
-                String tempSpace = toBoardSpace(i, j);
+                String tempSpace = toBoardSpace(j, i);
                 if (!isOccupied(tempSpace)){
                     System.out.print("|_");
                 }

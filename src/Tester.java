@@ -12,7 +12,7 @@ public class Tester {
 //            }
 //            System.out.print("|\n");
 //        }
-
+//
 //        Board checkers = new Board(false);
 //        checkers.printBoard();
 
@@ -68,6 +68,13 @@ public class Tester {
         ArrayList<String> toMoveSpaces3 = newKing.moveSpaces("d8");
         assertEquals("c7", toMoveSpaces3.get(0));
         assertEquals("e7", toMoveSpaces3.get(1));
+    }
+
+    @Test
+    public void testingCoordinates(){
+        int[] coords = Board.toCoordinates("a2");
+        assertEquals(1, coords[0]);
+        assertEquals(2, coords[1]);
     }
 
 }
