@@ -29,7 +29,6 @@ public class Board {
             }
         }
         if (!chess){
-            //TODO: I'll fix this constructor
             Piece whiteMan = new Man("wMan");
             for (int i = 1; i < 4; i += 2) {
                 for (int j = 1; j < 8; j += 2) {
@@ -72,14 +71,25 @@ public class Board {
 //        }
     }
 
+    public Board(Board other){
+        this.chess = other.chess;
+        gameBoard = new HashMap<>(other.gameBoard);
+        for (String boardSpace : other.gameBoard.keySet()){
+            gameBoard.put(boardSpace, new Man(other.gameBoard.get(boardSpace)));
+        }
+    }
+
     /**
      * movePiece changes some values in gameBoard to reflect a move made by a player
      * @param toMove is the space of Piece object being moved
      * @param moveTo is the board space the Piece object is being moved to
      */
-    public void movePiece(String toMove, String moveTo){
+    public Board movePiece(String toMove, String moveTo){
         //TODO: Implement this method
-
+        Piece toMovePiece = new Man(gameBoard.get(toMove));
+        gameBoard.replace(toMove, new Man(""));
+        gameBoard.replace(moveTo, toMovePiece);
+        return new Board(this);
     }
 
     /**

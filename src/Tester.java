@@ -13,8 +13,11 @@ public class Tester {
 //            System.out.print("|\n");
 //        }
 
-        Board checkers = new Board(false);
-        checkers.printBoard();
+//        Board checkers = new Board(false);
+//        checkers.printBoard();
+
+        Play newPlay = new Play();
+        newPlay.playCheckers();
     }
 
     @Test

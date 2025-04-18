@@ -1,7 +1,4 @@
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.Scanner;
+import java.util.*;
 
 public class Play {
     private Deque<Board> undos;
@@ -11,8 +8,8 @@ public class Play {
      * Initializes the undos and redos "Stacks"
      */
     public Play(){
-        undos = new ArrayDeque();
-        redos = new ArrayDeque();
+        undos = new LinkedList<>();
+        redos = new LinkedList<>();
     }
 
     public void playCheckers(){
@@ -22,14 +19,14 @@ public class Play {
         //and eventually checks for game end
         boolean playing = true;
 
+        checkers.printBoard();
         while (playing){
-            System.out.println("Enter in the board space of the piece you want to move.");
+            System.out.println("Enter in the board space of the piece you want to move: ");
             String toMove = in.next();
-            System.out.println("Enter in the board space of the space you want to move to.");
+            System.out.println("Enter in the board space of the space you want to move to: ");
             String moveTo = in.next();
-            checkers.movePiece(toMove, moveTo);
-            checkers.printBoard();
-
+            undos.add(checkers.movePiece(toMove, moveTo));
+            undos.getLast().printBoard();
         }
         //Testing the static methods
 //        for (int i = 1; i < 9; i++) {
