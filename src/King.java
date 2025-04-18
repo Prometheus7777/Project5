@@ -14,8 +14,60 @@ public class King extends Piece {
      * moveSpaces calculates the spaces a Piece could move to
      * @return a list of all the possible spaces that this Piece could move to
      */
+    public ArrayList<String> moveSpaces(String toMove){
+        ArrayList<ArrayList> spaces = new ArrayList<>();
+        ArrayList<String> spacesToMove = new ArrayList<>();
+        int[] tempCoords = Board.toCoordinates(toMove);
+        int x = tempCoords[0];
+        int y = tempCoords[1];
+
+        for (int i = 1; i < 8; i++) {
+            ArrayList<Integer> coordinates = new ArrayList<>();
+            if ((((x + i) <= 8) && ((x + i) >= 1)) && (((y + i) <= 8) && ((y + i) >= 1))){
+                coordinates.add(x + i);
+                coordinates.add(y + i);
+                spaces.add(coordinates);
+            }
+        }
+        for (int i = 1; i < 8; i++) {
+            ArrayList<Integer> coordinates = new ArrayList<>();
+            if ((((x + i) <= 8) && ((x + i) >= 1)) && (((y - i) <= 8) && ((y - i) >= 1))){
+                coordinates.add(x + i);
+                coordinates.add(y + i);
+                spaces.add(coordinates);
+            }
+        }
+        for (int i = 1; i < 8; i++) {
+            ArrayList<Integer> coordinates = new ArrayList<>();
+            if ((((x - i) <= 8) && ((x - i) >= 1)) && (((y + i) <= 8) && ((y + i) >= 1))){
+                coordinates.add(x + i);
+                coordinates.add(y + i);
+                spaces.add(coordinates);
+            }
+        }
+        for (int i = 1; i < 8; i++) {
+            ArrayList<Integer> coordinates = new ArrayList<>();
+            if ((((x - i) <= 8) && ((x - i) >= 1)) && (((y - i) <= 8) && ((y - i) >= 1))){
+                coordinates.add(x + i);
+                coordinates.add(y + i);
+                spaces.add(coordinates);
+            }
+        }
+
+        for (ArrayList<Integer> coords : spaces){
+            spacesToMove.add(Board.toBoardSpace(coords.get(0), coords.get(1)));
+        }
+
+        return spacesToMove;
+    }
+
+    /**
+     * moveSpaces calculates the spaces a Piece could move to
+     * @return a list of all the possible spaces that this Piece could move to
+     */
     public ArrayList<String> moveSpaces(String toMove, String moveTo){
         //TODO: Implement this method
+        int[] coords = Board.toCoordinates(toMove);
         return new ArrayList<>();
     }
 
