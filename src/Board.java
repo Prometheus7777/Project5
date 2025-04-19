@@ -21,7 +21,7 @@ public class Board {
         this.chess = chess;
         gameBoard = new HashMap<>();
 
-        Piece blankSpace = new Man("empty");
+        Piece blankSpace = new Man(true, true);
         for (int i = 1; i < 9; i++) {
             for (int j = 1; j < 9; j++) {
                 String key = toBoardSpace(i, j);
@@ -29,7 +29,7 @@ public class Board {
             }
         }
         if (!chess){
-            Piece whiteMan = new Man("wMan");
+            Piece whiteMan = new Man(true, false);
             for (int i = 1; i < 4; i += 2) {
                 for (int j = 1; j < 8; j += 2) {
                     String key = toBoardSpace(j, i);
@@ -41,7 +41,7 @@ public class Board {
                 gameBoard.replace(key, new Man(whiteMan));
             }
 
-            Piece blackMan = new Man("bMan");
+            Piece blackMan = new Man(false, false);
             for (int i = 6; i < 9; i += 2) {
                 for (int j = 2; j < 9; j += 2) {
                     String key = toBoardSpace(j, i);
@@ -73,9 +73,9 @@ public class Board {
 
     public Board(Board other){
         this.chess = other.chess;
-        gameBoard = new HashMap<>(other.gameBoard);
+        this.gameBoard = new HashMap<>();
         for (String boardSpace : other.gameBoard.keySet()){
-            gameBoard.put(boardSpace, new Man(other.gameBoard.get(boardSpace)));
+            this.gameBoard.put(boardSpace, new Man(other.gameBoard.get(boardSpace)));
         }
     }
 
@@ -84,12 +84,19 @@ public class Board {
      * @param toMove is the space of Piece object being moved
      * @param moveTo is the board space the Piece object is being moved to
      */
-    public Board movePiece(String toMove, String moveTo){
-        //TODO: Implement this method
+    public Board movePiece(String toMove, String moveTo) throws IllegalArgumentException {
+        int[] coordsTestToMove = toCoordinates(toMove);
+        int[] coordsTestMoveTo = toCoordinates(moveTo);
+        if ((!isOccupied(toMove)) || (isOccupied(moveTo))){
+            throw new IllegalArgumentException();
+        }
         Piece toMovePiece = new Man(gameBoard.get(toMove));
-        gameBoard.replace(toMove, new Man("empty"));
+        gameBoard.replace(toMove, new Man(true, true));
         gameBoard.replace(moveTo, toMovePiece);
-        return new Board(this);
+        Board toReturn = new Board(this);
+        gameBoard.replace(toMove, toMovePiece);
+        gameBoard.replace(moveTo, new Man(true, true));
+        return toReturn;
     }
 
     /**
@@ -98,7 +105,7 @@ public class Board {
      */
     public boolean isOccupied(String boardSpace){
         boolean occupied = true;
-        if (gameBoard.get(boardSpace).getName().equals("empty")){
+        if (gameBoard.get(boardSpace).isEmpty()){
             occupied = false;
         }
         return occupied;
@@ -116,8 +123,8 @@ public class Board {
                     System.out.print("|_");
                 }
                 else {
-                    if (gameBoard.get(tempSpace).getColor().equals("w")){
-                        if (gameBoard.get(tempSpace).getMan()){
+                    if (gameBoard.get(tempSpace).getWhite()){
+                        if (gameBoard.get(tempSpace).getKing()){
                             System.out.print("|K");
                         }
                         else {
@@ -125,7 +132,7 @@ public class Board {
                         }
                     }
                     else {
-                        if (gameBoard.get(tempSpace).getMan()){
+                        if (gameBoard.get(tempSpace).getKing()){
                             System.out.print("|k");
                         }
                         else {
@@ -151,7 +158,10 @@ public class Board {
 //        }
     }
 
-    public static String toBoardSpace(int x, int y){
+    public static String toBoardSpace(int x, int y) throws IllegalArgumentException{
+        if ((x < 1) || (x > 8) || (y < 1) || (y > 8)){
+            throw new IllegalArgumentException();
+        }
         StringBuilder sb = new StringBuilder();
         char space = (char) (x + 96);
         sb.append(space);
@@ -160,11 +170,13 @@ public class Board {
         //97-104
     }
 
-    public static int[] toCoordinates(String boardSpace){
+    public static int[] toCoordinates(String boardSpace) throws IllegalArgumentException{
         int[] coords = new int[2];
         coords[0] = (boardSpace.charAt(0) - 96);
         coords[1] = (boardSpace.charAt(1) - 48);
-
+        if ((coords[0] < 1) || (coords[0] > 8) || (coords[1] < 1) || (coords[1] > 8)){
+            throw new IllegalArgumentException();
+        }
         return coords;
     }
 }

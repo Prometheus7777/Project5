@@ -7,9 +7,16 @@ import java.util.ArrayList;
 public class King extends Piece {
 
     public King (Piece other){
-        super(other.getColor() + "King");
+        super(other);
     }
 
+    public boolean getMan(){
+        return false;
+    }
+
+    public boolean getKing(){
+        return true;
+    }
     /**
      * moveSpaces calculates the spaces a Piece could move to
      * @return a list of all the possible spaces that this Piece could move to

@@ -18,15 +18,53 @@ public class Play {
         //TODO: Make a loop that asks for new moves, adds the boards to the stacks based on inputs,
         //and eventually checks for game end
         boolean playing = true;
+        boolean undo = false;
+        boolean validInput = true;
 
-        checkers.printBoard();
+        undos.add(checkers);
+        undos.getFirst().printBoard();
         while (playing){
-            System.out.println("Enter in the board space of the piece you want to move: ");
+
+            if (!undo){
+                System.out.println("Enter in the board space of the piece you want to move, or \"undo\" to undo the last move: ");
+            }
+            else{
+                System.out.println("Enter in the board space of the piece you want to move, \"undo\" to undo the last move, or \"redo\" to redo the last undo: ");
+            }
             String toMove = in.next();
-            System.out.println("Enter in the board space of the space you want to move to: ");
-            String moveTo = in.next();
-            undos.add(checkers.movePiece(toMove, moveTo));
-            undos.getLast().printBoard();
+
+            if (toMove.equalsIgnoreCase("undo")){
+                if (!undos.isEmpty()){
+                    redos.push(undos.pop());
+                    redos.getFirst().printBoard();
+                    undo = true;
+                }
+            }
+            else if (toMove.equalsIgnoreCase("redo")){
+                if (!redos.isEmpty()){
+                    undos.push(redos.pop());
+                    undos.getFirst().printBoard();
+                    if (redos.isEmpty()){
+                        undo = false;
+                    }
+                }
+            }
+            else {
+                System.out.println("Enter in the board space of the space you want to move to: ");
+                String moveTo = in.next();
+                try {
+                    undos.push(undos.getFirst().movePiece(toMove, moveTo));
+                }
+                catch (IllegalArgumentException e){
+                    System.out.println("Invalid input!");
+                    validInput = false;
+                }
+                if (validInput){
+                    redos.clear();
+                    undo = false;
+                }
+                undos.getFirst().printBoard();
+            }
         }
         //Testing the static methods
 //        for (int i = 1; i < 9; i++) {

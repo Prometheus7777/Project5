@@ -22,7 +22,7 @@ public class Tester {
 
     @Test
     public void moveSpacesMan(){
-        Man newMan = new Man("wOne");
+        Man newMan = new Man(true, false);
         ArrayList<String> toMoveSpaces1 = newMan.moveSpaces("c3");
         assertEquals("d4", toMoveSpaces1.get(0));
         assertEquals("b4", toMoveSpaces1.get(1));
@@ -36,7 +36,7 @@ public class Tester {
         ArrayList<String> toMoveSpaces4 = newMan.moveSpaces("h7");
         assertEquals("g8", toMoveSpaces4.get(0));
 
-        Man secondMan = new Man("bOne");
+        Man secondMan = new Man(false, false);
         ArrayList<String> toMoveSpaces5 = secondMan.moveSpaces("c3");
         assertEquals("b2", toMoveSpaces5.get(0));
         assertEquals("d2", toMoveSpaces5.get(1));
@@ -53,7 +53,7 @@ public class Tester {
 
     @Test
     public void moveSpacesKing(){
-        Man newMan = new Man("wOne");
+        Man newMan = new Man(true, false);
         King newKing = new King(newMan);
 
         ArrayList<String> toMoveSpaces1 = newKing.moveSpaces("c3");

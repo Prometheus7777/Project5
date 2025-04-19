@@ -5,12 +5,20 @@ import java.util.ArrayList;
  */
 public class Man extends Piece {
 
-    public Man(String name){
-        super(name);
+    public Man(boolean white, boolean empty){
+        super(white, empty);
     }
 
     public Man(Piece other){
         super(other);
+    }
+
+    public boolean getMan(){
+        return true;
+    }
+
+    public boolean getKing(){
+        return false;
     }
     /**
      * moveSpaces calculates the spaces a Piece could move to
@@ -24,7 +32,7 @@ public class Man extends Piece {
         int y = tempCoords[1];
 
 
-        if (this.getColor().equals("w")){
+        if (this.getWhite()){
             if ((((x + 1) <= 8) && ((x + 1) >= 1)) && (((y + 1) <= 8) && ((y + 1) >= 1))){
                 ArrayList<Integer> coordinates = new ArrayList<>();
                 coordinates.add(x + 1);

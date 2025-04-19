@@ -9,40 +9,56 @@ public abstract class Piece {
     /**
      * name is the identifier for each specific Piece object
      */
-    private String name;
 
-    public Piece(String name){
-        this.name = name;
+    private boolean white;
+
+    private boolean empty;
+
+    public Piece(boolean white, boolean empty){
+        this.white = white;
+        this.empty = empty;
     }
 
     public Piece(Piece other){
-        this.name = other.name;
+        this.white = other.white;
+        this.empty = other.empty;
     }
 
-    /**
-     * @return name member variable
-     */
-    public String getName(){
-        return name;
+//    /**
+//     * @return name member variable
+//     */
+//    public String getName(){
+//        return name;
+//    }
+//
+//    public String getColor(){
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(name.charAt(0));
+//        return sb.toString();
+//    }
+//
+//    public boolean getMan(){
+//        StringBuilder sb = new StringBuilder();
+//        for (int i = 0; i < name.length(); i++) {
+//            sb.append(name.charAt(i));
+//        }
+//        sb.delete(0, 0);
+//        if (sb.toString().equals("Man")){
+//            return true;
+//        }
+//        return false;
+//    }
+
+    public boolean getWhite(){
+        return white;
     }
 
-    public String getColor(){
-        StringBuilder sb = new StringBuilder();
-        sb.append(name.charAt(0));
-        return sb.toString();
+    public boolean isEmpty(){
+        return empty;
     }
 
-    public boolean getMan(){
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < name.length(); i++) {
-            sb.append(name.charAt(i));
-        }
-        sb.delete(0, 0);
-        if (sb.toString().equals("Man")){
-            return true;
-        }
-        return false;
-    }
+    public abstract boolean getMan();
+    public abstract boolean getKing();
 
     /**
      * moveSpaces calculates the spaces a Piece could move to
