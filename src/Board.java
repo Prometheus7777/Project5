@@ -69,18 +69,47 @@ public class Board {
      * @param moveTo is the board space the Piece object is being moved to
      */
     public Board movePiece(String toMove, String moveTo) throws IllegalArgumentException {
+        //TODO: Almost done, just need to add promoting to king
         int[] coordsTestToMove = toCoordinates(toMove);
         int[] coordsTestMoveTo = toCoordinates(moveTo);
-        if ((!isOccupied(toMove)) || (isOccupied(moveTo))){
+        if (isOccupied(toMove) && !isOccupied(moveTo)){
+            if (!areAdjacent(toMove, moveTo)){
+                ArrayList<String> spacesToMove = gameBoard.get(toMove).moveSpaces(toMove, moveTo);
+                if (spacesToMove.contains(moveTo)){
+                    Piece toMovePiece = new Man(gameBoard.get(toMove));
+                    gameBoard.replace(toMove, new Man(true, true));
+                    gameBoard.replace(moveTo, toMovePiece);
+                    Piece removed = new Man(gameBoard.get(between(toMove, moveTo)));
+                    gameBoard.replace(between(toMove, moveTo), new Man(true, true));
+                    Board toReturn = new Board(this);
+                    gameBoard.replace(toMove, toMovePiece);
+                    gameBoard.replace(moveTo, new Man(true, true));
+                    gameBoard.replace(between(toMove, moveTo), new Man(removed));
+                    return toReturn;
+                }
+                else {
+                    throw new IllegalArgumentException();
+                }
+            }
+            else {
+                ArrayList<String> spacesToMove = gameBoard.get(toMove).moveSpaces(toMove);
+                if (spacesToMove.contains(moveTo)){
+                    Piece toMovePiece = new Man(gameBoard.get(toMove));
+                    gameBoard.replace(toMove, new Man(true, true));
+                    gameBoard.replace(moveTo, toMovePiece);
+                    Board toReturn = new Board(this);
+                    gameBoard.replace(toMove, toMovePiece);
+                    gameBoard.replace(moveTo, new Man(true, true));
+                    return toReturn;
+                }
+                else {
+                    throw new IllegalArgumentException();
+                }
+            }
+        }
+        else {
             throw new IllegalArgumentException();
         }
-        Piece toMovePiece = new Man(gameBoard.get(toMove));
-        gameBoard.replace(toMove, new Man(true, true));
-        gameBoard.replace(moveTo, toMovePiece);
-        Board toReturn = new Board(this);
-        gameBoard.replace(toMove, toMovePiece);
-        gameBoard.replace(moveTo, new Man(true, true));
-        return toReturn;
     }
 
     /**
@@ -95,6 +124,34 @@ public class Board {
         return occupied;
     }
 
+    public boolean areAdjacent(String toMove, String moveTo) throws IllegalArgumentException{
+        int[] coordsToMove = toCoordinates(toMove);
+        int[] coordsMoveTo = toCoordinates(moveTo);
+        if ((coordsToMove[0] != coordsMoveTo[0] + 1) && (coordsToMove[0] != coordsMoveTo[0] - 1) && (coordsToMove[1] != coordsMoveTo[1] + 1) && (coordsToMove[1] != coordsMoveTo[1] - 1)){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean ableToJump(String toMove, String moveTo){
+        int[] coordsToMove = toCoordinates(toMove);
+        int[] coordsMoveTo = toCoordinates(moveTo);
+        int xDif = coordsToMove[0] - coordsMoveTo[0];
+        int yDif = coordsToMove[1] - coordsMoveTo[1];
+        if ((xDif == 2) && (yDif == 2)){
+
+        }
+        else if ((xDif == 2) && (yDif == -2)){
+
+        }
+        else if ((xDif == -2) && (yDif == 2)){
+
+        }
+        else if ((xDif == -2) && (yDif == -2)){
+
+        }
+        return false;
+    }
     /**
      * play implements the other methods found in this class and uses the member variables to play a game
      * of chess or checkers depending on the value of the member variable chess
@@ -151,5 +208,10 @@ public class Board {
             throw new IllegalArgumentException();
         }
         return coords;
+    }
+
+    public static String between(String toMove, String moveTo) throws IllegalArgumentException{
+        //TODO: Write this method
+        return "";
     }
 }

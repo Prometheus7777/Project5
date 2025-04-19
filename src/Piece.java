@@ -39,7 +39,9 @@ public abstract class Piece {
      * moveSpaces calculates the spaces a Piece could move to
      * @return a list of all the possible spaces that this Piece could move to
      */
+    public abstract ArrayList<String> moveSpaces(String toMove);
     public abstract ArrayList<String> moveSpaces(String toMove, String moveTo);
+
 
     /**
      * moveSpaces calculates the spaces a Piece could move to,
