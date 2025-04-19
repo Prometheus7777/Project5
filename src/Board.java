@@ -141,6 +141,9 @@ public class Board {
     }
 
     public static int[] toCoordinates(String boardSpace) throws IllegalArgumentException{
+        if (boardSpace.length() < 2){
+            throw new IllegalArgumentException();
+        }
         int[] coords = new int[2];
         coords[0] = (boardSpace.charAt(0) - 96);
         coords[1] = (boardSpace.charAt(1) - 48);
