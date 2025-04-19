@@ -66,20 +66,6 @@ public class Play {
                 undos.getFirst().printBoard();
             }
         }
-        //Testing the static methods
-//        for (int i = 1; i < 9; i++) {
-//            for (int j = 1; j < 9; j++) {
-//                System.out.println(Board.toBoardSpace(i, j));
-//            }
-//        }
-//        for (int i = 1; i < 9; i++) {
-//            for (int j = 1; j < 9; j++) {
-//                String boardSpace = Board.toBoardSpace(i, j);
-//                int[] coordinates = Board.toCoordinates(boardSpace);
-//                System.out.print(coordinates[0]);
-//                System.out.println(coordinates[1]);
-//            }
-//        }
     }
 
     public void playChess(){

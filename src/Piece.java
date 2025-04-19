@@ -24,31 +24,6 @@ public abstract class Piece {
         this.empty = other.empty;
     }
 
-//    /**
-//     * @return name member variable
-//     */
-//    public String getName(){
-//        return name;
-//    }
-//
-//    public String getColor(){
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(name.charAt(0));
-//        return sb.toString();
-//    }
-//
-//    public boolean getMan(){
-//        StringBuilder sb = new StringBuilder();
-//        for (int i = 0; i < name.length(); i++) {
-//            sb.append(name.charAt(i));
-//        }
-//        sb.delete(0, 0);
-//        if (sb.toString().equals("Man")){
-//            return true;
-//        }
-//        return false;
-//    }
-
     public boolean getWhite(){
         return white;
     }

@@ -53,22 +53,6 @@ public class Board {
                 gameBoard.replace(key, new Man(blackMan));
             }
         }
-//        for (int i = 0; i < 8; i++) {
-//            for (int j = 0; j < 8; j++) {
-//                Piece blankSpace = new Man(new PieceType(0, true), i ,j);
-//                gameBoard.add(blankSpace);
-//            }
-//        }
-//        if (!chess){
-//            for (int i = 1; i < 24; i += 2) {
-//                Piece newWhitePiece = new Man(new PieceType(2, false), i % 8, i / 8);
-//                gameBoard.add(i, newWhitePiece);
-//            }
-//            for (int i = 41; i < 64; i += 2) {
-//                Piece newBlackPiece = new Man(new PieceType(3, false), i % 8, i / 8);
-//                gameBoard.add(i, newBlackPiece);
-//            }
-//        }
     }
 
     public Board(Board other){
@@ -143,19 +127,6 @@ public class Board {
             }
             System.out.print("|\n");
         }
-//        for (int i = gameBoard.size() - 1; i >= 0; i--) {
-//            if (gameBoard.get(i).getName().getEmpty()){
-//                System.out.println("_");
-//            }
-//            else {
-//                if (gameBoard.get(i).getName().isB()){
-//                    System.err.println("o");
-//                }
-//                else {
-//                    System.out.println("o");
-//                }
-//            }
-//        }
     }
 
     public static String toBoardSpace(int x, int y) throws IllegalArgumentException{
@@ -167,7 +138,6 @@ public class Board {
         sb.append(space);
         sb.append(y);
         return sb.toString();
-        //97-104
     }
 
     public static int[] toCoordinates(String boardSpace) throws IllegalArgumentException{

@@ -53,39 +53,6 @@ public class King extends Piece {
             spaces.add(coordinates);
         }
 
-//        for (int i = 1; i < 8; i++) {
-//            ArrayList<Integer> coordinates = new ArrayList<>();
-//            if ((((x + i) <= 8) && ((x + i) >= 1)) && (((y + i) <= 8) && ((y + i) >= 1))){
-//                coordinates.add(x + i);
-//                coordinates.add(y + i);
-//                spaces.add(coordinates);
-//            }
-//        }
-//        for (int i = 1; i < 8; i++) {
-//            ArrayList<Integer> coordinates = new ArrayList<>();
-//            if ((((x + i) <= 8) && ((x + i) >= 1)) && (((y - i) <= 8) && ((y - i) >= 1))){
-//                coordinates.add(x + i);
-//                coordinates.add(y - i);
-//                spaces.add(coordinates);
-//            }
-//        }
-//        for (int i = 1; i < 8; i++) {
-//            ArrayList<Integer> coordinates = new ArrayList<>();
-//            if ((((x - i) <= 8) && ((x - i) >= 1)) && (((y + i) <= 8) && ((y + i) >= 1))){
-//                coordinates.add(x - i);
-//                coordinates.add(y + i);
-//                spaces.add(coordinates);
-//            }
-//        }
-//        for (int i = 1; i < 8; i++) {
-//            ArrayList<Integer> coordinates = new ArrayList<>();
-//            if ((((x - i) <= 8) && ((x - i) >= 1)) && (((y - i) <= 8) && ((y - i) >= 1))){
-//                coordinates.add(x - i);
-//                coordinates.add(y - i);
-//                spaces.add(coordinates);
-//            }
-//        }
-
         for (ArrayList<Integer> coords : spaces){
             spacesToMove.add(Board.toBoardSpace(coords.get(0), coords.get(1)));
         }

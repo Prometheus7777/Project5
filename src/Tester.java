@@ -6,16 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Tester {
     public static void main(String[] args){
-//        for (int i = 0; i < 8; i++) {
-//            for (int j = 0; j < 8; j++) {
-//                System.out.print("|_");
-//            }
-//            System.out.print("|\n");
-//        }
-//
-//        Board checkers = new Board(false);
-//        checkers.printBoard();
-
         Play newPlay = new Play();
         newPlay.playCheckers();
     }
