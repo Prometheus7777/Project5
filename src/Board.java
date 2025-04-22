@@ -85,8 +85,8 @@ public class Board {
                 if (!checkForJumps()){
                     throw new IllegalArgumentException();
                 }
-                String newToMove  = gameBoard.get(toMove).moveSpaces(toMove, moveTo);
-                if (newToMove.equals(moveTo)){
+                //String newToMove  = gameBoard.get(toMove).moveSpaces(toMove, moveTo);
+                if (checkForJump(toMove, moveTo)){
                     Piece toMovePiece = new Man(gameBoard.get(toMove));
                     gameBoard.replace(toMove, new Man(true, true));
                     gameBoard.replace(moveTo, toMovePiece);
@@ -340,10 +340,58 @@ public class Board {
     }
 
     /**
+     * @param toMove is the space of the Piece object being moved
+     * @param moveTo is the space the Piece object is being moved to
+     * @return whether or not there is a legal jump between toMove and moveTo
+     * @throws IllegalArgumentException if there are out of bounds coordinates
+     */
+    public boolean checkForJump(String toMove, String moveTo) throws IllegalArgumentException{
+        String spaceBetween = between(toMove, moveTo);
+        if (!gameBoard.get(spaceBetween).isEmpty()){
+            if (!gameBoard.get(toMove).getKing()){
+                if (gameBoard.get(toMove).getWhite() && (!gameBoard.get(spaceBetween).getWhite())){
+                    int[] coordsToMove = toCoordinates(toMove);
+                    int[] coordsBetween = toCoordinates(spaceBetween);
+                    if (coordsToMove[1] < coordsBetween[1]){
+                        return true;
+                    }
+                    return false;
+                }
+                else if (!gameBoard.get(toMove).getWhite() && (gameBoard.get(spaceBetween).getWhite())){
+                    int[] coordsToMove = toCoordinates(toMove);
+                    int[] coordsBetween = toCoordinates(spaceBetween);
+                    if (coordsToMove[1] > coordsBetween[1]){
+                        return true;
+                    }
+                    return false;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                if (gameBoard.get(toMove).getWhite() && (!gameBoard.get(spaceBetween).getWhite())){
+                    return true;
+                }
+                else if (!gameBoard.get(toMove).getWhite() && (gameBoard.get(spaceBetween).getWhite())){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
      * printBoard goes through the gameBoard map and prints out a board based on the values in gameBoard
      */
     public void printBoard(){
         for (int i = 8; i >= 1; i--) {
+            System.out.print(i + " ");
             for (int j = 1; j <= 8; j++) {
                 String tempSpace = toBoardSpace(j, i);
                 if (!isOccupied(tempSpace)){
@@ -370,6 +418,7 @@ public class Board {
             }
             System.out.print("|\n");
         }
+        System.out.println("   a b c d e f g h");
     }
 
     /**
@@ -431,7 +480,7 @@ public class Board {
             return toBoardSpace(coordsToMove[0] + 1, coordsToMove[1] + 1);
         }
         else {
-            return "";
+            throw new IllegalArgumentException();
         }
     }
 }
