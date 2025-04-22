@@ -88,9 +88,10 @@ public class Board {
                 //String newToMove  = gameBoard.get(toMove).moveSpaces(toMove, moveTo);
                 if (checkForJump(toMove, moveTo)){
                     if (promoting(toMove, moveTo)){
-                        Piece toMovePiece = new King(gameBoard.get(toMove));
+                        Piece toMovePiece = new Man(gameBoard.get(toMove));
                         gameBoard.replace(toMove, new Man(true, true));
-                        gameBoard.replace(moveTo, toMovePiece);
+                        King tempKing = new King(toMovePiece);
+                        gameBoard.replace(moveTo, tempKing);
                         Piece removed = new Man(gameBoard.get(between(toMove, moveTo)));
                         gameBoard.replace(between(toMove, moveTo), new Man(true, true));
                         Board toReturn = new Board(this);
@@ -123,9 +124,10 @@ public class Board {
                 ArrayList<String> spacesToMove = gameBoard.get(toMove).moveSpaces(toMove);
                 if (spacesToMove.contains(moveTo)){
                     if (promoting(toMove, moveTo)){
-                        Piece toMovePiece = new King(gameBoard.get(toMove));
+                        Piece toMovePiece = new Man(gameBoard.get(toMove));
                         gameBoard.replace(toMove, new Man(true, true));
-                        gameBoard.replace(moveTo, toMovePiece);
+                        King tempKing = new King(toMovePiece);
+                        gameBoard.replace(moveTo, tempKing);
                         Board toReturn = new Board(this);
                         gameBoard.replace(toMove, toMovePiece);
                         gameBoard.replace(moveTo, new Man(true, true));
@@ -421,7 +423,7 @@ public class Board {
      */
     public boolean promoting(String toMove, String moveTo){
         int[] coords = toCoordinates(moveTo);
-        if (((coords[1] == 8) && (gameBoard.get(toMove).getWhite()) && !(gameBoard.get(toMove).getKing())) && (coords[1] == 1) && !(gameBoard.get(toMove).getWhite()) && !(gameBoard.get(toMove).getKing())){
+        if (((coords[1] == 8) && (gameBoard.get(toMove).getWhite()) && !(gameBoard.get(toMove).getKing())) || (coords[1] == 1) && !(gameBoard.get(toMove).getWhite()) && !(gameBoard.get(toMove).getKing())){
             return true;
         }
         return false;
