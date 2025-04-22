@@ -390,7 +390,6 @@ public class Board {
     }
 
     /**
-     *
      * @param boardSpace the String for the boardSpace the corresponds to the coordinates x and y
      * @return an int[] array of length 2 with the coordinates x and y
      * @throws IllegalArgumentException if boardSpace does not fit the proper format
@@ -408,8 +407,31 @@ public class Board {
         return coords;
     }
 
+    /**
+     * @param toMove is the space of the Piece object being moved
+     * @param moveTo is the space the Piece object is being moved to
+     * @return the board space between toMove and moveTo
+     * @throws IllegalArgumentException if there are out of bounds coordinates
+     */
     public static String between(String toMove, String moveTo) throws IllegalArgumentException{
-        //TODO: Write this method
-        return "";
+        int[] coordsToMove = toCoordinates(toMove);
+        int[] coordsMoveTo = toCoordinates(moveTo);
+        int xDif = coordsToMove[0] - coordsMoveTo[0];
+        int yDif = coordsToMove[1] - coordsMoveTo[1];
+        if ((xDif == 2) && (yDif == 2)){
+            return toBoardSpace(coordsToMove[0] - 1, coordsToMove[1] - 1);
+        }
+        else if ((xDif == -2) && (yDif == 2)){
+            return toBoardSpace(coordsToMove[0] + 1, coordsToMove[1] - 1);
+        }
+        else if ((xDif == 2) && (yDif == -2)){
+            return toBoardSpace(coordsToMove[0] - 1, coordsToMove[1] + 1);
+        }
+        else if ((xDif == -2) && (yDif == -2)){
+            return toBoardSpace(coordsToMove[0] + 1, coordsToMove[1] + 1);
+        }
+        else {
+            return "";
+        }
     }
 }
