@@ -12,6 +12,9 @@ public class Play {
         undos = new LinkedList<>();
     }
 
+    /**
+     * Goes through the logic of playing the checkers game
+     */
     public void playCheckers(){
         Board checkers = new Board(false);
         Scanner in = new Scanner(System.in);
@@ -82,74 +85,6 @@ public class Play {
                 }
             }
         }
-
-        /*
-        Board checkers = new Board(false);
-        Scanner in = new Scanner(System.in);
-        boolean playing = true;
-        boolean undo = false;
-        boolean first = true;
-
-        checkers.printBoard();
-        while (playing){
-            if (first){
-                System.out.println("Enter in the board space of the piece you want to move: ");
-            }
-            else if (!undo){
-                System.out.println("Enter in the board space of the piece you want to move, or \"undo\" to undo the last move: ");
-            }
-            else {
-                System.out.println("Enter in the board space of the piece you want to move, \"undo\" to undo the last move, or \"redo\" to redo the last undo: ");
-            }
-            String toMove = in.next();
-
-            if ((toMove.equalsIgnoreCase("undo")) && !first){
-                if (!movesList.isEmpty()){
-                    undos.push(movesList.pop());
-                    undos.getFirst().printBoard();
-                    undo = true;
-                }
-            }
-            else if ((toMove.equalsIgnoreCase("redo")) && !first){
-                if (!undos.isEmpty()){
-                    movesList.push(undos.pop());
-                    movesList.getFirst().printBoard();
-                    if (undos.isEmpty()){
-                        undo = false;
-                    }
-                }
-            }
-            else {
-                boolean validInput = true;
-                System.out.println("Enter in the board space of the space you want to move to: ");
-                String moveTo = in.next();
-                if (first){
-                    try {
-                        movesList.push(checkers.movePiece(toMove, moveTo));
-                        first = false;
-                        movesList.getFirst().printBoard();
-                    }
-                    catch (IllegalArgumentException e){
-                        System.out.println("Invalid input!");
-                    }
-                }
-                else {
-                    try {
-                        movesList.push(movesList.getFirst().movePiece(toMove, moveTo));
-                    }
-                    catch (IllegalArgumentException e){
-                        System.out.println("Invalid input!");
-                        validInput = false;
-                    }
-                    if (validInput){
-                        undos.clear();
-                        undo = false;
-                    }
-                    movesList.getFirst().printBoard();
-                }
-            }
-        }
-         */
     }
 
     public void playChess(){

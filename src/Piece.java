@@ -7,11 +7,13 @@ import java.util.ArrayList;
  */
 public abstract class Piece {
     /**
-     * name is the identifier for each specific Piece object
+     * white is a boolean showing whether or not the piece object is white
      */
-
     private boolean white;
 
+    /**
+     * empty is a boolean showing whether or not the piece object is on a board space
+     */
     private boolean empty;
 
     public Piece(boolean white, boolean empty){
@@ -32,7 +34,9 @@ public abstract class Piece {
         return empty;
     }
 
-    public abstract boolean getMan();
+    /**
+     * @return whether or not the specific object is a king, depending on the subclass
+     */
     public abstract boolean getKing();
 
     /**
@@ -40,7 +44,7 @@ public abstract class Piece {
      * @return a list of all the possible spaces that this Piece could move to
      */
     public abstract ArrayList<String> moveSpaces(String toMove);
-    public abstract ArrayList<String> moveSpaces(String toMove, String moveTo);
+    public abstract String moveSpaces(String toMove, String moveTo);
 
 
     /**
@@ -49,5 +53,4 @@ public abstract class Piece {
      * spaces already containing a piece when playing checkers, or spaces blocked by a piece when playing chess
      * @return a list of all the possible spaces that this Piece could move to
      */
-    //public abstract ArrayList<String> moveSpaces(ArrayList<Integer> occupiedSpaces);
 }

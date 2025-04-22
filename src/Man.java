@@ -13,16 +13,13 @@ public class Man extends Piece {
         super(other);
     }
 
-    public boolean getMan(){
-        return true;
-    }
-
     public boolean getKing(){
         return false;
     }
+
     /**
-     * moveSpaces calculates the spaces a Piece could move to
-     * @return a list of all the possible spaces that this Piece could move to
+     * moveSpaces calculates the spaces a Man could move to if there are no possible jumps
+     * @return a list of all the possible spaces that this Man could move to
      */
     public ArrayList<String> moveSpaces(String toMove){
         ArrayList<ArrayList> spaces = new ArrayList<>();
@@ -30,7 +27,6 @@ public class Man extends Piece {
         int[] tempCoords = Board.toCoordinates(toMove);
         int x = tempCoords[0];
         int y = tempCoords[1];
-
 
         if (this.getWhite()){
             if ((((x + 1) <= 8) && ((x + 1) >= 1)) && (((y + 1) <= 8) && ((y + 1) >= 1))){
@@ -69,12 +65,12 @@ public class Man extends Piece {
     }
 
     /**
-     * moveSpaces calculates the spaces a Piece could move to
-     * @return a list of all the possible spaces that this Piece could move to
+     * moveSpaces calculates the space a Man could move to if there is a possible jump
+     * @return a list of all the possible spaces that this Man could move to
      */
-    public ArrayList<String> moveSpaces(String toMove, String moveTo){
+    public String moveSpaces(String toMove, String moveTo){
         //TODO: Implement this method
-        return new ArrayList<>();
+        return "";
     }
 
     /**
@@ -83,7 +79,4 @@ public class Man extends Piece {
      * for example, spaces already containing a piece
      * @return a list of all the possible spaces that this Piece could move to
      */
-//    public ArrayList<String> moveSpaces(ArrayList<String> occupiedSpaces){
-//        return new ArrayList<String>();
-//    }
 }

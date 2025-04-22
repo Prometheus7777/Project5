@@ -12,11 +12,15 @@ public class Board {
      * gameBoard keeps track of Piece objects based on String locations
      */
     private Map<String, Piece> gameBoard;
+
     /**
      * chess marks whether or not the Board object is playing chess or checkers
      */
     private boolean chess;
 
+    /**
+     * @param chess is whether or not chess is being played, currently this constructor does not support playing chess
+     */
     public Board(boolean chess){
         this.chess = chess;
         gameBoard = new HashMap<>();
@@ -55,6 +59,10 @@ public class Board {
         }
     }
 
+    /**
+     * copy constructor for a Board object
+     * @param other is the Board object being copied
+     */
     public Board(Board other){
         this.chess = other.chess;
         this.gameBoard = new HashMap<>();
@@ -65,8 +73,8 @@ public class Board {
 
     /**
      * movePiece changes some values in gameBoard to reflect a move made by a player
-     * @param toMove is the space of Piece object being moved
-     * @param moveTo is the board space the Piece object is being moved to
+     * @param toMove is the space of the Piece object being moved
+     * @param moveTo is the space the Piece object is being moved to
      */
     public Board movePiece(String toMove, String moveTo) throws IllegalArgumentException {
         //TODO: Almost done, just need to add promoting to king
@@ -77,8 +85,8 @@ public class Board {
                 if (!checkForJumps()){
                     throw new IllegalArgumentException();
                 }
-                ArrayList<String> spacesToMove = gameBoard.get(toMove).moveSpaces(toMove, moveTo);
-                if (spacesToMove.contains(moveTo)){
+                String newToMove  = gameBoard.get(toMove).moveSpaces(toMove, moveTo);
+                if (newToMove.equals(moveTo)){
                     Piece toMovePiece = new Man(gameBoard.get(toMove));
                     gameBoard.replace(toMove, new Man(true, true));
                     gameBoard.replace(moveTo, toMovePiece);
@@ -130,6 +138,12 @@ public class Board {
         return occupied;
     }
 
+    /**
+     * @param toMove is the space of the Piece object being moved
+     * @param moveTo is the space the Piece object is being moved to
+     * @return whether or not the toMove and moveTo spaces are next ot each other
+     * @throws IllegalArgumentException if there are out of bounds coordinates
+     */
     public boolean areAdjacent(String toMove, String moveTo) throws IllegalArgumentException{
         int[] coordsToMove = toCoordinates(toMove);
         int[] coordsMoveTo = toCoordinates(moveTo);
@@ -139,7 +153,10 @@ public class Board {
         return true;
     }
 
-
+    /**
+     * @return whether or not there are jumps possible on the Board object
+     * @throws IllegalArgumentException if there are out of bounds coordinates
+     */
     public boolean checkForJumps() throws IllegalArgumentException{
         boolean found = false;
         for (String boardSpace : gameBoard.keySet()){
@@ -322,28 +339,8 @@ public class Board {
         return found;
     }
 
-    public boolean ableToJump(String toMove, String moveTo){
-        int[] coordsToMove = toCoordinates(toMove);
-        int[] coordsMoveTo = toCoordinates(moveTo);
-        int xDif = coordsToMove[0] - coordsMoveTo[0];
-        int yDif = coordsToMove[1] - coordsMoveTo[1];
-        if ((xDif == 2) && (yDif == 2)){
-
-        }
-        else if ((xDif == 2) && (yDif == -2)){
-
-        }
-        else if ((xDif == -2) && (yDif == 2)){
-
-        }
-        else if ((xDif == -2) && (yDif == -2)){
-
-        }
-        return false;
-    }
     /**
-     * play implements the other methods found in this class and uses the member variables to play a game
-     * of chess or checkers depending on the value of the member variable chess
+     * printBoard goes through the gameBoard map and prints out a board based on the values in gameBoard
      */
     public void printBoard(){
         for (int i = 8; i >= 1; i--) {
@@ -375,6 +372,12 @@ public class Board {
         }
     }
 
+    /**
+     * @param x is the x coordinate
+     * @param y is the y coordinate
+     * @return the String for the boardSpace the corresponds to the coordinates x and y
+     * @throws IllegalArgumentException if x or y is out of bounds
+     */
     public static String toBoardSpace(int x, int y) throws IllegalArgumentException{
         if ((x < 1) || (x > 8) || (y < 1) || (y > 8)){
             throw new IllegalArgumentException();
@@ -386,6 +389,12 @@ public class Board {
         return sb.toString();
     }
 
+    /**
+     *
+     * @param boardSpace the String for the boardSpace the corresponds to the coordinates x and y
+     * @return an int[] array of length 2 with the coordinates x and y
+     * @throws IllegalArgumentException if boardSpace does not fit the proper format
+     */
     public static int[] toCoordinates(String boardSpace) throws IllegalArgumentException{
         if (boardSpace.length() < 2){
             throw new IllegalArgumentException();
