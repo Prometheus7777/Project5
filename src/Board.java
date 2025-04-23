@@ -67,7 +67,12 @@ public class Board {
         this.chess = other.chess;
         this.gameBoard = new HashMap<>();
         for (String boardSpace : other.gameBoard.keySet()){
-            this.gameBoard.put(boardSpace, new Man(other.gameBoard.get(boardSpace)));
+            if (other.gameBoard.get(boardSpace).getKing()){
+                this.gameBoard.put(boardSpace, new King(other.gameBoard.get(boardSpace)));
+            }
+            else{
+                this.gameBoard.put(boardSpace, new Man(other.gameBoard.get(boardSpace)));
+            }
         }
     }
 
@@ -90,8 +95,19 @@ public class Board {
                     if (promoting(toMove, moveTo)){
                         Piece toMovePiece = new Man(gameBoard.get(toMove));
                         gameBoard.replace(toMove, new Man(true, true));
-                        King tempKing = new King(toMovePiece);
-                        gameBoard.replace(moveTo, tempKing);
+                        gameBoard.replace(moveTo, new King(toMovePiece));
+                        Piece removed = new Man(gameBoard.get(between(toMove, moveTo)));
+                        gameBoard.replace(between(toMove, moveTo), new Man(true, true));
+                        Board toReturn = new Board(this);
+                        gameBoard.replace(toMove, toMovePiece);
+                        gameBoard.replace(moveTo, new Man(true, true));
+                        gameBoard.replace(between(toMove, moveTo), new Man(removed));
+                        return toReturn;
+                    }
+                    else if (gameBoard.get(toMove).getKing()){
+                        Piece toMovePiece = new King(gameBoard.get(toMove));
+                        gameBoard.replace(toMove, new Man(true, true));
+                        gameBoard.replace(moveTo, new King(toMovePiece));
                         Piece removed = new Man(gameBoard.get(between(toMove, moveTo)));
                         gameBoard.replace(between(toMove, moveTo), new Man(true, true));
                         Board toReturn = new Board(this);
@@ -126,8 +142,16 @@ public class Board {
                     if (promoting(toMove, moveTo)){
                         Piece toMovePiece = new Man(gameBoard.get(toMove));
                         gameBoard.replace(toMove, new Man(true, true));
-                        King tempKing = new King(toMovePiece);
-                        gameBoard.replace(moveTo, tempKing);
+                        gameBoard.replace(moveTo, new King(toMovePiece));
+                        Board toReturn = new Board(this);
+                        gameBoard.replace(toMove, toMovePiece);
+                        gameBoard.replace(moveTo, new Man(true, true));
+                        return toReturn;
+                    }
+                    else if (gameBoard.get(toMove).getKing()){
+                        Piece toMovePiece = new King(gameBoard.get(toMove));
+                        gameBoard.replace(toMove, new Man(true, true));
+                        gameBoard.replace(moveTo, toMovePiece);
                         Board toReturn = new Board(this);
                         gameBoard.replace(toMove, toMovePiece);
                         gameBoard.replace(moveTo, new Man(true, true));
@@ -189,178 +213,198 @@ public class Board {
         for (String boardSpace : gameBoard.keySet()){
             int[] coords = toCoordinates(boardSpace);
             if (!gameBoard.get(boardSpace).isEmpty()){
-                if ((coords[0] > 2) && (coords[0] < 7) && (coords[1] > 2) && (coords[1] < 7)){
-                    if (gameBoard.get(boardSpace).getWhite()){
-                        if (gameBoard.get(boardSpace).getKing()){
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                        else {
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                    }
-                    else {
-                        if (gameBoard.get(boardSpace).getKing()){
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                        else {
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
+//                if ((coords[0] > 2) && (coords[0] < 7) && (coords[1] > 2) && (coords[1] < 7)){
+//                    if (gameBoard.get(boardSpace).getWhite()){
+//                        if (gameBoard.get(boardSpace).getKing()){
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                        else {
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                    }
+//                    else {
+//                        if (gameBoard.get(boardSpace).getKing()){
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                        else {
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                    }
+//                }
+//                else if ((coords[0] > 2) && (coords[0] < 7) && (coords[1] <= 2)){
+//                    if (gameBoard.get(boardSpace).getWhite()){
+//                        if (gameBoard.get(boardSpace).getKing()){
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                        else {
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                    }
+//                    else {
+//                        if (gameBoard.get(boardSpace).getKing()){
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                    }
+//                }
+//                else if ((coords[0] > 2) && (coords[0] < 7) && (coords[1] >= 7)){
+//                    if (gameBoard.get(boardSpace).getWhite()){
+//                        if (gameBoard.get(boardSpace).getKing()){
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                    }
+//                    else {
+//                        if (gameBoard.get(boardSpace).getKing()){
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                        else {
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                    }
+//                }
+//                else if ((coords[0] <= 2) && (coords[1] > 2) && (coords[1] < 7)){
+//                    if (gameBoard.get(boardSpace).getWhite()){
+//                        if (gameBoard.get(boardSpace).getKing()){
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                        else {
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                    }
+//                    else {
+//                        if (gameBoard.get(boardSpace).getKing()){
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                        else {
+//                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                    }
+//                }
+//                else if ((coords[0] >= 7) && (coords[1] > 2) && (coords[1] < 7)){
+//                    if (gameBoard.get(boardSpace).getWhite()){
+//                        if (gameBoard.get(boardSpace).getKing()){
+//                            if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                        else {
+//                            if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                    }
+//                    else {
+//                        if (gameBoard.get(boardSpace).getKing()){
+//                            if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                        else {
+//                            if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
+//                                found = true;
+//                            }
+//                        }
+//                    }
+//                }
+                if ((coords[0] + 2 <= 8) && (coords[1] + 2 <= 8)){
+                    if (checkForJump(toBoardSpace(coords[0], coords[1]), toBoardSpace(coords[0] + 2, coords[1] + 2))){
+                        return true;
                     }
                 }
-                else if ((coords[0] > 2) && (coords[0] < 7) && (coords[1] <= 2)){
-                    if (gameBoard.get(boardSpace).getWhite()){
-                        if (gameBoard.get(boardSpace).getKing()){
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                        else {
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                    }
-                    else {
-                        if (gameBoard.get(boardSpace).getKing()){
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
+                if ((coords[0] + 2 <= 8) && (coords[1] - 2 >= 1)){
+                    if (checkForJump(toBoardSpace(coords[0], coords[1]), toBoardSpace(coords[0] + 2, coords[1] - 2))){
+                        return true;
                     }
                 }
-                else if ((coords[0] > 2) && (coords[0] < 7) && (coords[1] >= 7)){
-                    if (gameBoard.get(boardSpace).getWhite()){
-                        if (gameBoard.get(boardSpace).getKing()){
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                    }
-                    else {
-                        if (gameBoard.get(boardSpace).getKing()){
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                        else {
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
+                if ((coords[0] - 2 >= 1) && (coords[1] + 2 <= 8)){
+                    if (checkForJump(toBoardSpace(coords[0], coords[1]), toBoardSpace(coords[0] - 2, coords[1] + 2))){
+                        return true;
                     }
                 }
-                else if ((coords[0] <= 2) && (coords[1] > 2) && (coords[1] < 7)){
-                    if (gameBoard.get(boardSpace).getWhite()){
-                        if (gameBoard.get(boardSpace).getKing()){
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                        else {
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                    }
-                    else {
-                        if (gameBoard.get(boardSpace).getKing()){
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                        else {
-                            if ((gameBoard.get(toBoardSpace(coords[0] + 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] + 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                    }
-                }
-                else if ((coords[0] >= 7) && (coords[1] > 2) && (coords[1] < 7)){
-                    if (gameBoard.get(boardSpace).getWhite()){
-                        if (gameBoard.get(boardSpace).getKing()){
-                            if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                        else {
-                            if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                    }
-                    else {
-                        if (gameBoard.get(boardSpace).getKing()){
-                            if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] + 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] + 1)).isEmpty())) {
-                                found = true;
-                            }
-                            else if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
-                        else {
-                            if ((gameBoard.get(toBoardSpace(coords[0] - 2, coords[1] - 2)).isEmpty()) && (gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).getWhite()) && !(gameBoard.get(toBoardSpace(coords[0] - 1, coords[1] - 1)).isEmpty())) {
-                                found = true;
-                            }
-                        }
+                if ((coords[0] - 2 >= 1) && (coords[1] -2 >= 1)){
+                    if (checkForJump(toBoardSpace(coords[0], coords[1]), toBoardSpace(coords[0] - 2, coords[1] - 2))){
+                        return true;
                     }
                 }
             }
@@ -376,6 +420,9 @@ public class Board {
      */
     public boolean checkForJump(String toMove, String moveTo) throws IllegalArgumentException{
         String spaceBetween = between(toMove, moveTo);
+        if (!gameBoard.get(moveTo).isEmpty()){
+            return false;
+        }
         if (!gameBoard.get(spaceBetween).isEmpty()){
             if (!gameBoard.get(toMove).getKing()){
                 if (gameBoard.get(toMove).getWhite() && (!gameBoard.get(spaceBetween).getWhite())){
