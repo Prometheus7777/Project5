@@ -573,4 +573,25 @@ public class Board {
             throw new IllegalArgumentException();
         }
     }
+
+    public boolean gameOver(){
+        boolean white = false;
+        boolean initial = true;
+        for (String boardSpace : gameBoard.keySet()){
+            if (!initial){
+                if (!gameBoard.get(boardSpace).isEmpty()){
+                    if (white != gameBoard.get(boardSpace).getWhite()){
+                        return false;
+                    }
+                }
+            }
+            else {
+                if (!gameBoard.get(boardSpace).isEmpty()){
+                    white = gameBoard.get(boardSpace).getWhite();
+                    initial = false;
+                }
+            }
+        }
+        return true;
+    }
 }

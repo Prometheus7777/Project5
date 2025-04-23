@@ -27,8 +27,11 @@ public class Play {
             if (first){
                 System.out.println("Enter in the board space of the piece you want to move: ");
             }
-            else {
+            else if (!undos.isEmpty()) {
                 System.out.println("Enter in the board space of the piece you want to move, \"undo\" to undo the last move, or \"redo\" to redo the last undo: ");
+            }
+            else {
+                System.out.println("Enter in the board space of the piece you want to move, or \"undo\" to undo the last move: ");
             }
             String toMove = in.next();
 
@@ -82,6 +85,10 @@ public class Play {
                         undos.clear();
                     }
                     movesList.getFirst().printBoard();
+                    if (movesList.getFirst().gameOver()){
+                        playing = false;
+                        System.out.println("Game over!");
+                    }
                 }
             }
         }
