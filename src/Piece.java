@@ -45,12 +45,4 @@ public abstract class Piece {
      */
     public abstract ArrayList<String> moveSpaces(String toMove);
     public abstract String moveSpaces(String toMove, String moveTo);
-
-
-    /**
-     * moveSpaces calculates the spaces a Piece could move to,
-     * and then removes previously calculated spaces that are impossible to move to, for example,
-     * spaces already containing a piece when playing checkers, or spaces blocked by a piece when playing chess
-     * @return a list of all the possible spaces that this Piece could move to
-     */
 }

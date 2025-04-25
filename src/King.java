@@ -65,11 +65,4 @@ public class King extends Piece {
         int[] coords = Board.toCoordinates(toMove);
         return "";
     }
-
-    /**
-     * moveSpaces calculates the spaces a Piece could move to,
-     * and then removes previously calculated spaces that are impossible to move to,
-     * for example, spaces already containing a piece
-     * @return a list of all the possible spaces that this Piece could move to
-     */
 }

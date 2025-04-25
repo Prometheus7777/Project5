@@ -22,7 +22,9 @@ public class Play {
         boolean first = true;
 
         checkers.printBoard();
+        movesList.clear();
         movesList.push(checkers);
+        undos.clear();
         while (playing){
             if (first){
                 System.out.println("Enter in the board space of the piece you want to move: ");
@@ -87,7 +89,12 @@ public class Play {
                     movesList.getFirst().printBoard();
                     if (movesList.getFirst().gameOver()){
                         playing = false;
-                        System.out.println("Game over!");
+                        if (movesList.getFirst().getWhite()){
+                            System.out.println("Game over! Black is victorious!");
+                        }
+                        else {
+                            System.out.println("Game over! White is victorious!");
+                        }
                     }
                 }
             }
