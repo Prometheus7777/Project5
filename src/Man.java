@@ -27,19 +27,16 @@ public class Man extends Piece {
         int[] tempCoords = Board.toCoordinates(toMove);
         int x = tempCoords[0];
         int y = tempCoords[1];
-
         if (this.getWhite()){
             if ((((x + 1) <= 8) && ((x + 1) >= 1)) && (((y + 1) <= 8) && ((y + 1) >= 1))){
                 ArrayList<Integer> coordinates = new ArrayList<>();
                 coordinates.add(x + 1);
                 coordinates.add(y + 1);
                 spaces.add(coordinates);
-            }
-            if ((((x - 1) <= 8) && ((x - 1) >= 1)) && (((y + 1) <= 8) && ((y + 1) >= 1))){
-                ArrayList<Integer> coordinates = new ArrayList<>();
-                coordinates.add(x - 1);
-                coordinates.add(y + 1);
-                spaces.add(coordinates);
+                ArrayList<Integer> coordinates2 = new ArrayList<>();
+                coordinates2.add(x - 1);
+                coordinates2.add(y + 1);
+                spaces.add(coordinates2);
             }
         }
         else {
@@ -48,12 +45,10 @@ public class Man extends Piece {
                 coordinates.add(x - 1);
                 coordinates.add(y - 1);
                 spaces.add(coordinates);
-            }
-            if ((((x + 1) <= 8) && ((x + 1) >= 1)) && (((y - 1) <= 8) && ((y - 1) >= 1))){
-                ArrayList<Integer> coordinates = new ArrayList<>();
-                coordinates.add(x + 1);
-                coordinates.add(y - 1);
-                spaces.add(coordinates);
+                ArrayList<Integer> coordinates2 = new ArrayList<>();
+                coordinates2.add(x + 1);
+                coordinates2.add(y - 1);
+                spaces.add(coordinates2);
             }
         }
 
@@ -69,7 +64,6 @@ public class Man extends Piece {
      * @return a list of all the possible spaces that this Man could move to
      */
     public String moveSpaces(String toMove, String moveTo){
-        //TODO: Implement this method
         return "";
     }
 

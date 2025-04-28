@@ -1,7 +1,9 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import javax.swing.*;
 
 /**
  * The Board class uses Maps and Stacks of the Piece class and subclasses to run a checkers game,
@@ -19,7 +21,8 @@ public class Board {
     private boolean chess;
 
     private boolean white;
-
+    private JFrame frame;
+    private JPanel panel;
     /**
      * @param chess is whether or not chess is being played, currently this constructor does not support playing chess
      */
@@ -60,6 +63,10 @@ public class Board {
                 gameBoard.replace(key, new Man(blackMan));
             }
         }
+        frame = new JFrame("GUI Test");
+        panel = new JPanel(); panel.setLayout(new GridLayout(8,8));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(640,640);
     }
 
     /**
@@ -78,6 +85,8 @@ public class Board {
                 this.gameBoard.put(boardSpace, new Man(other.gameBoard.get(boardSpace)));
             }
         }
+        this.frame = other.frame;
+        this.panel = other.panel;
     }
 
     public boolean getWhite(){
@@ -387,6 +396,35 @@ public class Board {
      * printBoard goes through the gameBoard map and prints out a board based on the values in gameBoard
      */
     public void printBoard(){
+        panel.removeAll();
+        for(int i = 8; i >= 1; i--) {
+            for (int j = 1; j <= 8; j++) {
+                String tempSpace = toBoardSpace(j, i);
+                boolean temp = gameBoard.get(tempSpace).getWhite();
+                char mk;
+                if (!isOccupied(tempSpace)) {
+                    mk = '_';
+                } else {
+                    if (gameBoard.get(tempSpace).getWhite()) {
+                        if (gameBoard.get(tempSpace).getKing()) {
+                            mk = 'K';
+                        } else {
+                            mk = '\u03B8';
+                        }
+                    } else {
+                        if (gameBoard.get(tempSpace).getKing()) {
+                            mk = 'k';
+                        } else {
+                            mk = 'o';
+                        }
+                    }
+                }
+                panel.add(new space((i-1) * 80, (j-1) * 80, temp, mk));
+            }
+        }
+        frame.add(panel);
+        frame.setVisible(true);
+        panel.setVisible(true);
         for (int i = 8; i >= 1; i--) {
             System.out.print(i + " ");
             for (int j = 1; j <= 8; j++) {
@@ -500,5 +538,32 @@ public class Board {
             }
         }
         return true;
+    }
+    private class space extends JComponent {
+        private int x; private int y; private boolean color; private char mk;
+        public space(int x, int y, boolean color, char type) {
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            mk = type; //man or king
+            setPreferredSize(new Dimension(80,80));
+
+        }
+        @Override
+        protected void paintComponent(Graphics g){
+            if((x/80)%2 == 1 ^ (y/80)%2 == 1) {
+                g.setColor(Color.white);
+            }
+            else {
+                g.setColor(Color.LIGHT_GRAY);
+            }
+            g.fillRect(0,0,80,80);
+            super.paintComponent(g);
+            if(color)
+                g.setColor(Color.BLACK);
+            else
+                g.setColor(Color.red);
+            g.drawString(Character.toString(mk), 40,40);
+        }
     }
 }
