@@ -242,8 +242,12 @@ public class Board {
      */
     public boolean isOccupied(String boardSpace){
         boolean occupied = true;
-        if (gameBoard.get(boardSpace).isEmpty()){
-            occupied = false;
+        for (String tempBoardSpace : gameBoard.keySet()){
+            if (tempBoardSpace.equalsIgnoreCase(boardSpace)){
+                if (gameBoard.get(boardSpace).isEmpty()){
+                    occupied = false;
+                }
+            }
         }
         return occupied;
     }

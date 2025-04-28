@@ -70,7 +70,7 @@ public class Play {
                         first = false;
                         movesList.getFirst().printBoard();
                     }
-                    catch (IllegalArgumentException e){
+                    catch (IllegalArgumentException | NullPointerException e){
                         System.out.println("Illegal move!");
                         movesList.getFirst().printBoard();
                     }
@@ -79,7 +79,7 @@ public class Play {
                     try {
                         movesList.push(movesList.getFirst().movePiece(toMove, moveTo));
                     }
-                    catch (IllegalArgumentException e){
+                    catch (IllegalArgumentException | NullPointerException e){
                         System.out.println("Illegal move!");
                         validInput = false;
                     }
