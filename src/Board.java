@@ -409,18 +409,10 @@ public class Board {
                 if (!isOccupied(tempSpace)) {
                     mk = '_';
                 } else {
-                    if (gameBoard.get(tempSpace).getWhite()) {
-                        if (gameBoard.get(tempSpace).getKing()) {
-                            mk = 'K';
-                        } else {
-                            mk = '\u03B8';
-                        }
+                    if (gameBoard.get(tempSpace).getKing()) {
+                        mk = 'K';
                     } else {
-                        if (gameBoard.get(tempSpace).getKing()) {
-                            mk = 'k';
-                        } else {
-                            mk = 'o';
-                        }
+                        mk = '\u03B8';
                     }
                 }
                 panel.add(new space((i-1) * 80, (j-1) * 80, temp, mk));
