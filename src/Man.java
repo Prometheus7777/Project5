@@ -13,6 +13,9 @@ public class Man extends Piece {
         super(other);
     }
 
+    /**
+     * @return false because any Man object is never a King
+     */
     public boolean getKing(){
         return false;
     }
@@ -51,20 +54,9 @@ public class Man extends Piece {
                 spaces.add(coordinates2);
             }
         }
-
         for (ArrayList<Integer> coords : spaces){
             spacesToMove.add(Board.toBoardSpace(coords.get(0), coords.get(1)));
         }
-
         return spacesToMove;
     }
-
-    /**
-     * moveSpaces calculates the space a Man could move to if there is a possible jump
-     * @return a list of all the possible spaces that this Man could move to
-     */
-    public String moveSpaces(String toMove, String moveTo){
-        return "";
-    }
-
 }

@@ -5,6 +5,9 @@ import java.util.Scanner;
  * and then calls the play method on that board object
  */
 public class Checkers {
+    /**
+     * Plays the game of checkers by asking the user for input using text, is a two player game and does not support playing the computer
+     */
     public static void main(String[] args){
         Play checkers = new Play();
         Scanner in = new Scanner(System.in);

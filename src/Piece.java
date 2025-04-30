@@ -26,10 +26,16 @@ public abstract class Piece {
         this.empty = other.empty;
     }
 
+    /**
+     * @return the boolean value of white
+     */
     public boolean getWhite(){
         return white;
     }
 
+    /**
+     * @return the boolean value of empty
+     */
     public boolean isEmpty(){
         return empty;
     }
@@ -44,5 +50,4 @@ public abstract class Piece {
      * @return a list of all the possible spaces that this Piece could move to
      */
     public abstract ArrayList<String> moveSpaces(String toMove);
-    public abstract String moveSpaces(String toMove, String moveTo);
 }

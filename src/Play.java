@@ -1,11 +1,18 @@
 import java.util.*;
 
 public class Play {
+    /**
+     * movesList is used as a stack, and keeps a record of the Board objects (moves) made while playing checkers
+     */
     private Deque<Board> movesList;
+
+    /**
+     * undos is used as a stack, and keeps a record of Board objects (moves) that have been undone
+     */
     private Deque<Board> undos;
 
     /**
-     * Initializes the undos and redos "Stacks"
+     * Initializes the undos and redos as LinkesLists, they are used as stacks
      */
     public Play(){
         movesList = new LinkedList<>();
@@ -16,7 +23,7 @@ public class Play {
      * Goes through the logic of playing the checkers game
      */
     public void playCheckers(){
-        Board checkers = new Board(false);
+        Board checkers = new Board();
         Scanner in = new Scanner(System.in);
         boolean playing = true;
         boolean first = true;
@@ -99,9 +106,5 @@ public class Play {
                 }
             }
         }
-    }
-
-    public void playChess(){
-
     }
 }

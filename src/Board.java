@@ -16,18 +16,13 @@ public class Board {
     private Map<String, Piece> gameBoard;
 
     /**
-     * chess marks whether or not the Board object is playing chess or checkers
+     * white keeps track of the player's turn
      */
-    private boolean chess;
-
     private boolean white;
     private JFrame frame;
     private JPanel panel;
-    /**
-     * @param chess is whether or not chess is being played, currently this constructor does not support playing chess
-     */
-    public Board(boolean chess){
-        this.chess = chess;
+
+    public Board(){
         white = true;
         gameBoard = new HashMap<>();
 
@@ -38,30 +33,28 @@ public class Board {
                 gameBoard.put(key, new Man(blankSpace));
             }
         }
-        if (!chess){
-            Piece whiteMan = new Man(true, false);
-            for (int i = 1; i < 4; i += 2) {
-                for (int j = 1; j < 8; j += 2) {
-                    String key = toBoardSpace(j, i);
-                    gameBoard.replace(key, new Man(whiteMan));
-                }
-            }
-            for (int i = 2; i < 9; i += 2) {
-                String key = toBoardSpace(i, 2);
+        Piece whiteMan = new Man(true, false);
+        for (int i = 1; i < 4; i += 2) {
+            for (int j = 1; j < 8; j += 2) {
+                String key = toBoardSpace(j, i);
                 gameBoard.replace(key, new Man(whiteMan));
             }
+        }
+        for (int i = 2; i < 9; i += 2) {
+            String key = toBoardSpace(i, 2);
+            gameBoard.replace(key, new Man(whiteMan));
+        }
 
-            Piece blackMan = new Man(false, false);
-            for (int i = 6; i < 9; i += 2) {
-                for (int j = 2; j < 9; j += 2) {
-                    String key = toBoardSpace(j, i);
-                    gameBoard.replace(key, new Man(blackMan));
-                }
-            }
-            for (int i = 1; i < 8; i += 2) {
-                String key = toBoardSpace(i, 7);
+        Piece blackMan = new Man(false, false);
+        for (int i = 6; i < 9; i += 2) {
+            for (int j = 2; j < 9; j += 2) {
+                String key = toBoardSpace(j, i);
                 gameBoard.replace(key, new Man(blackMan));
             }
+        }
+        for (int i = 1; i < 8; i += 2) {
+            String key = toBoardSpace(i, 7);
+            gameBoard.replace(key, new Man(blackMan));
         }
         frame = new JFrame("GUI Test");
         panel = new JPanel(); panel.setLayout(new GridLayout(8,8));
@@ -74,7 +67,6 @@ public class Board {
      * @param other is the Board object being copied
      */
     public Board(Board other){
-        this.chess = other.chess;
         this.white = other.white;
         this.gameBoard = new HashMap<>();
         for (String boardSpace : other.gameBoard.keySet()){
@@ -89,6 +81,9 @@ public class Board {
         this.panel = other.panel;
     }
 
+    /**
+     * @return the boolean value of white
+     */
     public boolean getWhite(){
         return white;
     }
@@ -307,6 +302,12 @@ public class Board {
         }
         return false;
     }
+
+    /**
+     *
+     * @param toMove the space where jumps are checked around
+     * @return whether or not there are any jumps found around toMove
+     */
     public boolean checkForJumpsAroundSpace(String toMove){
         boolean found = false;
         int[] toMoveCoords = toCoordinates(toMove);
@@ -383,10 +384,9 @@ public class Board {
     }
 
     /**
-     *
-     * @param toMove
-     * @param moveTo
-     * @return
+     * @param toMove is the space of the Piece object being moved
+     * @param moveTo is the space the Piece object is being moved to
+     * @return whether or not the piece is promoting
      */
     public boolean promoting(String toMove, String moveTo){
         int[] coords = toCoordinates(moveTo);
@@ -515,6 +515,10 @@ public class Board {
         }
     }
 
+    /**
+     * gameOver checks the state of the gameBoard to see if the requirements for ending the game have been reached
+     * @return whether or not the game has ended
+     */
     public boolean gameOver(){
         boolean white = false;
         boolean initial = true;
@@ -535,8 +539,13 @@ public class Board {
         }
         return true;
     }
+
     private class space extends JComponent {
-        private int x; private int y; private boolean color; private char mk;
+        private int x;
+        private int y;
+        private boolean color;
+        private char mk;
+
         public space(int x, int y, boolean color, char type) {
             this.x = x;
             this.y = y;
