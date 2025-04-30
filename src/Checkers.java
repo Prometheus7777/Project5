@@ -11,10 +11,12 @@ public class Checkers {
     public static void main(String[] args){
         Scanner in = new Scanner(System.in);
         boolean running = true;
+        //Outputting the rules to the user
         System.out.println("Welcome to checkers! In this version of the game you must enter the coordinates of the piece you would like to move, and of the board space you would like to move to.");
         System.out.println("Jumps are always forced, which means if a player can make a jump or double jump, they must take that move.");
         System.out.println("The white pieces are represented by '\u03B8' and 'K', while the black pieces are represented by 'o' and 'k.'");
         System.out.println("Good luck!");
+        //Loop to run checkers until the user says to stop
         while (running){
             Play checkers = new Play();
             checkers.playCheckers();

@@ -2,7 +2,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 import javax.swing.*;
 
 /**
@@ -27,6 +26,7 @@ public class Board {
         gameBoard = new HashMap<>();
 
         Piece blankSpace = new Man(true, true);
+        //Setting up gameBoard with 64 blank spaces
         for (int i = 1; i < 9; i++) {
             for (int j = 1; j < 9; j++) {
                 String key = toBoardSpace(i, j);
@@ -34,6 +34,7 @@ public class Board {
             }
         }
         Piece whiteMan = new Man(true, false);
+        //Changing some to white pieces
         for (int i = 1; i < 4; i += 2) {
             for (int j = 1; j < 8; j += 2) {
                 String key = toBoardSpace(j, i);
@@ -46,6 +47,7 @@ public class Board {
         }
 
         Piece blackMan = new Man(false, false);
+        //Setting some to black pieces
         for (int i = 6; i < 9; i += 2) {
             for (int j = 2; j < 9; j += 2) {
                 String key = toBoardSpace(j, i);
@@ -94,26 +96,35 @@ public class Board {
      * @param moveTo is the space the Piece object is being moved to
      */
     public Board movePiece(String toMove, String moveTo) throws IllegalArgumentException {
-        //TODO: Almost done, just need to add promoting to king
+        //Testing the coordinates initially, if they are invalid toCoordinates will throw an IllegalArgumentException
         int[] coordsTestToMove = toCoordinates(toMove);
         int[] coordsTestMoveTo = toCoordinates(moveTo);
+        //If the color of the piece is wrong, throw an IllegalArgumentException
         if (white != gameBoard.get(toMove).getWhite()){
             throw new IllegalArgumentException();
         }
+        //These next if statements go over the different possibilities for moves
         if (isOccupied(toMove) && !isOccupied(moveTo)){
+            //Different cases for if the spaces are adjacent or not, i.e. if a jump or normal move is being attempted
             if (!areAdjacent(toMove, moveTo)){
+                //If a jump is being attempted and there are no jumps possible, throw an IllegalArgumentException
                 if (!checkForJumps()){
                     throw new IllegalArgumentException();
                 }
-                //String newToMove  = gameBoard.get(toMove).moveSpaces(toMove, moveTo);
+                //Check for a jump between the two spaces input by the user, the reason both checkForJump
+                //and checkForJumps in general are used is because of certain exception that are thrown
+                //This is controlled so that only an IllegalArgumentException is thrown
                 if (checkForJump(toMove, moveTo)){
-                    if (promoting(toMove, moveTo)){
+                    //The jump is confirmed as valid,
+                    //but more information must be determined to find out what edits must be made to the new Board object
+                    //Different things will happen based on
+                    if (promoting(toMove, moveTo)){//If the piece is promoting
                         Piece toMovePiece = new Man(gameBoard.get(toMove));
                         gameBoard.replace(toMove, new Man(true, true));
                         gameBoard.replace(moveTo, new King(toMovePiece));
                         Piece removed = new Man(gameBoard.get(between(toMove, moveTo)));
                         gameBoard.replace(between(toMove, moveTo), new Man(true, true));
-                        if (!checkForJumpsAroundSpace(moveTo)){
+                        if (!checkForJumpsAroundSpace(moveTo)){//And if the piece has a double jump
                             white = !white;
                             Board toReturn = new Board(this);
                             gameBoard.replace(toMove, toMovePiece);
@@ -122,7 +133,7 @@ public class Board {
                             white = !white;
                             return toReturn;
                         }
-                        else {
+                        else {//And the piece does not have a double jump
                             Board toReturn = new Board(this);
                             gameBoard.replace(toMove, toMovePiece);
                             gameBoard.replace(moveTo, new Man(true, true));
@@ -130,13 +141,13 @@ public class Board {
                             return toReturn;
                         }
                     }
-                    else if (gameBoard.get(toMove).getKing()){
+                    else if (gameBoard.get(toMove).getKing()){//If the piece is a King
                         Piece toMovePiece = new King(gameBoard.get(toMove));
                         gameBoard.replace(toMove, new Man(true, true));
                         gameBoard.replace(moveTo, new King(toMovePiece));
                         Piece removed = new Man(gameBoard.get(between(toMove, moveTo)));
                         gameBoard.replace(between(toMove, moveTo), new Man(true, true));
-                        if (!checkForJumpsAroundSpace(moveTo)){
+                        if (!checkForJumpsAroundSpace(moveTo)){//And the piece has a double jump
                             white = !white;
                             Board toReturn = new Board(this);
                             gameBoard.replace(toMove, toMovePiece);
@@ -145,7 +156,7 @@ public class Board {
                             white = !white;
                             return toReturn;
                         }
-                        else {
+                        else {//And the piece does not have a double jump
                             Board toReturn = new Board(this);
                             gameBoard.replace(toMove, toMovePiece);
                             gameBoard.replace(moveTo, new Man(true, true));
@@ -153,13 +164,13 @@ public class Board {
                             return toReturn;
                         }
                     }
-                    else {
+                    else {//If the piece is a Man and not promoting
                         Piece toMovePiece = new Man(gameBoard.get(toMove));
                         gameBoard.replace(toMove, new Man(true, true));
                         gameBoard.replace(moveTo, toMovePiece);
                         Piece removed = new Man(gameBoard.get(between(toMove, moveTo)));
                         gameBoard.replace(between(toMove, moveTo), new Man(true, true));
-                        if (!checkForJumpsAroundSpace(moveTo)){
+                        if (!checkForJumpsAroundSpace(moveTo)){//And the piece has a double jump
                             white = !white;
                             Board toReturn = new Board(this);
                             gameBoard.replace(toMove, toMovePiece);
@@ -168,7 +179,7 @@ public class Board {
                             white = !white;
                             return toReturn;
                         }
-                        else {
+                        else {//And the piece does not have a double jump
                             Board toReturn = new Board(this);
                             gameBoard.replace(toMove, toMovePiece);
                             gameBoard.replace(moveTo, new Man(true, true));
@@ -177,17 +188,21 @@ public class Board {
                         }
                     }
                 }
-                else {
+                else {//If the jump between toMove and moveTo is not possible
                     throw new IllegalArgumentException();
                 }
             }
             else {
+                //If the spaces are adjacent but there are jumps possible, throw an IllegalArgumentException, as jumps are forced
                 if (checkForJumps()){
                 throw new IllegalArgumentException();
                 }
                 ArrayList<String> spacesToMove = gameBoard.get(toMove).moveSpaces(toMove);
                 if (spacesToMove.contains(moveTo)){
-                    if (promoting(toMove, moveTo)){
+                    //The move is confirmed as valid,
+                    //but more information must be determined to find out what edits must be made to the new Board object
+                    //Different things will happen based on
+                    if (promoting(toMove, moveTo)){//If the piece is promoting
                         Piece toMovePiece = new Man(gameBoard.get(toMove));
                         gameBoard.replace(toMove, new Man(true, true));
                         gameBoard.replace(moveTo, new King(toMovePiece));
@@ -198,7 +213,7 @@ public class Board {
                         white = !white;
                         return toReturn;
                     }
-                    else if (gameBoard.get(toMove).getKing()){
+                    else if (gameBoard.get(toMove).getKing()){//If the piece is a King
                         Piece toMovePiece = new King(gameBoard.get(toMove));
                         gameBoard.replace(toMove, new Man(true, true));
                         gameBoard.replace(moveTo, toMovePiece);
@@ -209,7 +224,7 @@ public class Board {
                         white = !white;
                         return toReturn;
                     }
-                    else {
+                    else {//If the piece is a Man and not promoting
                         Piece toMovePiece = new Man(gameBoard.get(toMove));
                         gameBoard.replace(toMove, new Man(true, true));
                         gameBoard.replace(moveTo, toMovePiece);
@@ -221,11 +236,13 @@ public class Board {
                         return toReturn;
                     }
                 }
+                //If the move is not valid, throw an IllegalArgumentException
                 else {
                     throw new IllegalArgumentException();
                 }
             }
         }
+        //If the space the piece is moving from is empty or the space it is moving to is occupied, throw an IllegalArgumentException
         else {
             throw new IllegalArgumentException();
         }
@@ -332,6 +349,7 @@ public class Board {
         }
         return found;
     }
+
     /**
      * @param toMove is the space of the Piece object being moved
      * @param moveTo is the space the Piece object is being moved to

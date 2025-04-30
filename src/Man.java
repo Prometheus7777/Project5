@@ -25,7 +25,7 @@ public class Man extends Piece {
      * @return a list of all the possible spaces that this Man could move to
      */
     public ArrayList<String> moveSpaces(String toMove){
-        ArrayList<ArrayList> spaces = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> spaces = new ArrayList<>();
         ArrayList<String> spacesToMove = new ArrayList<>();
         int[] tempCoords = Board.toCoordinates(toMove);
         int x = tempCoords[0];
