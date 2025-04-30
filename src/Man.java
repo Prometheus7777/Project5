@@ -36,10 +36,12 @@ public class Man extends Piece {
                 coordinates.add(x + 1);
                 coordinates.add(y + 1);
                 spaces.add(coordinates);
-                ArrayList<Integer> coordinates2 = new ArrayList<>();
-                coordinates2.add(x - 1);
-                coordinates2.add(y + 1);
-                spaces.add(coordinates2);
+            }
+            if ((((x - 1) <= 8) && ((x - 1) >= 1)) && (((y + 1) <= 8) && ((y + 1) >= 1))){
+                ArrayList<Integer> coordinates = new ArrayList<>();
+                coordinates.add(x - 1);
+                coordinates.add(y + 1);
+                spaces.add(coordinates);
             }
         }
         else {
@@ -48,10 +50,12 @@ public class Man extends Piece {
                 coordinates.add(x - 1);
                 coordinates.add(y - 1);
                 spaces.add(coordinates);
-                ArrayList<Integer> coordinates2 = new ArrayList<>();
-                coordinates2.add(x + 1);
-                coordinates2.add(y - 1);
-                spaces.add(coordinates2);
+            }
+            if ((((x + 1) <= 8) && ((x + 1) >= 1)) && (((y - 1) <= 8) && ((y - 1) >= 1))){
+                ArrayList<Integer> coordinates = new ArrayList<>();
+                coordinates.add(x + 1);
+                coordinates.add(y - 1);
+                spaces.add(coordinates);
             }
         }
         for (ArrayList<Integer> coords : spaces){

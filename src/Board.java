@@ -304,7 +304,6 @@ public class Board {
     }
 
     /**
-     *
      * @param toMove the space where jumps are checked around
      * @return whether or not there are any jumps found around toMove
      */
