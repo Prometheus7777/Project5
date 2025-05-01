@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
-
 /**
  * The Board class uses Maps and Stacks of the Piece class and subclasses to run a checkers game,
  * or a chess game, depending on how a Board object is created.
@@ -415,6 +414,7 @@ public class Board {
 
     /**
      * printBoard goes through the gameBoard map and prints out a board based on the values in gameBoard
+     * it also outputs the board onto a JPanel window using the swing library
      */
     public void printBoard(){
         panel.removeAll();
@@ -557,6 +557,11 @@ public class Board {
         return true;
     }
 
+    /**
+     * the space class is used to create the spaces in the checkerboard for the graphics window.
+     * it contains the coordinates, color, and occupant of the given space, and is used in conjunction with the
+     * board frames in the printboard class
+     */
     private class space extends JComponent {
         private int x;
         private int y;
